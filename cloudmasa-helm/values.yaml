@@ -15,7 +15,7 @@ service:
     port: 80
 
 env:
-  MONGO_URI: "mongodb+srv://username:password@cluster.mongodb.net/test"
+  MONGO_URI: "mongodb+srv://keerthisankavi_db_user:mfNxw8wDf5Q1nVjZ@cluster.xmlrcxf.mongodb.net/?retryWrites=true&w=majority&appName=cluster"
   NODE_ENV: production
 
 ingress:
