@@ -21,4 +21,4 @@ env:
 ingress:
   enabled: true
   className: nginx
-  host: cloudmasa.yourdomain.com
+  host: app.cloudmasa.com
