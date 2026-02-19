@@ -1,0 +1,24 @@
+replicaCount: 2
+
+image:
+  server:
+    repository: vigneshkavi/cloudmasa-server
+    tag: latest
+  client:
+    repository: vigneshkavi/cloudmasa-client
+    tag: latest
+
+service:
+  server:
+    port: 3000
+  client:
+    port: 80
+
+env:
+  MONGO_URI: "mongodb+srv://username:password@cluster.mongodb.net/test"
+  NODE_ENV: production
+
+ingress:
+  enabled: true
+  className: nginx
+  host: cloudmasa.yourdomain.com
