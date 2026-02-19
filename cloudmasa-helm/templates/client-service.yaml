@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: cloudmasa-client
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: cloudmasa-client
   ports:
