@@ -1,11 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloudmasa-client
+  name: {{ .Release.Name }}-client  # ← Was hardcoded "cloudmasa-client"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}-client
 spec:
   type: ClusterIP
   selector:
-    app: cloudmasa-client
+    app: {{ .Release.Name }}-client  # ← Must match deployment pod labels
   ports:
-    - port: 80
-      targetPort: 80
+    - port: {{ .Values.service.client.port }}
+      targetPort: {{ .Values.service.client.targetPort }}
+      protocol: TCP
