@@ -1,20 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudmasa-server
+  name: {{ .Release.Name }}-server  # ← Was hardcoded "cloudmasa-server"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}-server
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: cloudmasa-server
+      app: {{ .Release.Name }}-server  # ← Must match pod template labels
   template:
     metadata:
       labels:
-        app: cloudmasa-server
+        app: {{ .Release.Name }}-server  # ← CRITICAL: Must match service selector
     spec:
       containers:
         - name: server
           image: "{{ .Values.image.server.repository }}:{{ .Values.image.server.tag }}"
+          imagePullPolicy: {{ .Values.image.server.pullPolicy }}
           ports:
             - containerPort: 3000
           env:
@@ -29,3 +33,16 @@ spec:
             limits:
               cpu: "500m"
               memory: "512Mi"
+          # Add health checks for better reliability
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
