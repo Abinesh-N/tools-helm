@@ -2,25 +2,30 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cloudmasa-ingress
+  name: {{ .Release.Name }}-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: cloudmasa-client
-                port:
-                  number: 80
           - path: /api
             pathType: Prefix
             backend:
               service:
-                name: cloudmasa-server
+                name: {{ .Release.Name }}-server  # ← Was hardcoded
                 port:
-                  number: 3000
+                  number: {{ .Values.service.server.port }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-client  # ← Was hardcoded
+                port:
+                  number: {{ .Values.service.client.port }}
 {{- end }}
