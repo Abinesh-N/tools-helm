@@ -4,15 +4,19 @@ image:
   server:
     repository: vigneshkavi/cloudmasa-server
     tag: latest
+    pullPolicy: Always
   client:
     repository: vigneshkavi/cloudmasa-client
     tag: latest
+    pullPolicy: Always
 
 service:
   server:
     port: 3000
+    targetPort: 3000
   client:
     port: 80
+    targetPort: 80
 
 env:
   MONGO_URI: "mongodb+srv://keerthisankavi_db_user:mfNxw8wDf5Q1nVjZ@cluster.xmlrcxf.mongodb.net/?retryWrites=true&w=majority&appName=cluster"
@@ -22,3 +26,6 @@ ingress:
   enabled: true
   className: nginx
   host: app.cloudmasa.com
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
